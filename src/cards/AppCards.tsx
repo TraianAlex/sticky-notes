@@ -4,42 +4,16 @@ import { useLocalStorageState } from './useLocalStorage';
 import { Card } from './Card';
 import { AddButton } from './AddButton';
 import { TrashZone } from './TrashZone';
+import { constrainToContainer, isPointInRect, type CardType, type DragState } from './utils';
 
 const AddModal = lazy(() => import('./AddModal'));
-
-interface CardType {
-  id: string;
-  label: string;
-  position: { top: number; left: number };
-  size: { width: number; height: number };
-}
-
-type DragState = 
-  | { type: 'drag'; card: CardType; offset: { x: number; y: number } }
-  | { type: 'resize'; card: CardType; handle: string; startPos: { x: number; y: number }; startSize: { width: number; height: number } }
-  | null;
 
 const DEFAULT_SIZE = { width: 200, height: 150 };
 const MIN_SIZE = { width: 100, height: 50 };
 const HANDLE_OFFSET = 4;
 
-// Helper functions
-const constrainToContainer = (
-  value: number,
-  min: number,
-  max: number
-): number => Math.max(min, Math.min(value, max));
-
-const isPointInRect = (
-  x: number,
-  y: number,
-  rect: DOMRect
-): boolean => {
-  return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-};
-
 const AppCards = () => {
-  const [cards, setCards] = useLocalStorageState<Record<string, CardType>>('cards2', {});
+  const [cards, setCards] = useLocalStorageState<Record<string, CardType>>('cards', {});
   const [dragState, setDragState] = useState<DragState>(null);
   const [isOverTrash, setIsOverTrash] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -154,7 +128,7 @@ const AppCards = () => {
   return (
     <div
       className="position-fixed start-0 w-100 bg-light overflow-hidden"
-      style={{ top: '56px', height: 'calc(100vh - 56px)' }}
+      style={{ top: '0', height: '100vh' }}
       ref={boardRef}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}

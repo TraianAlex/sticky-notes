@@ -4,7 +4,7 @@ interface TrashZoneProps {
   isOverTrash: boolean;
 }
 
-const TRASH_ZONE_SIZE = '7.5rem'; // 120px
+const TRASH_ZONE_SIZE = '8rem';
 
 export const TrashZone = forwardRef<HTMLDivElement, TrashZoneProps>(
   ({ isOverTrash }, ref) => {
@@ -17,17 +17,15 @@ export const TrashZone = forwardRef<HTMLDivElement, TrashZoneProps>(
           right: '1.875rem',
           width: TRASH_ZONE_SIZE,
           height: TRASH_ZONE_SIZE,
-          borderStyle: 'dashed',
-          backgroundColor: isOverTrash ? 'rgba(220, 53, 69, 0.15)' : 'rgba(0, 0, 0, 0.05)',
           fontSize: '2rem',
           transition: 'all 0.2s',
           pointerEvents: 'none',
           zIndex: 1000,
-          transform: isOverTrash ? 'scale(1.1)' : 'scale(1)',
+          transform: isOverTrash ? 'scale(1.4)' : 'scale(1)',
         }}
       >
         🗑️
-        <div className={`small mt-2 text-center fw-bold ${isOverTrash ? 'text-danger' : 'text-secondary'}`}>
+        <div className={`small mt-2 text-center fw-bold ${isOverTrash ? 'text-danger mb-5' : 'text-secondary'}`}>
           {isOverTrash ? 'Drop to delete' : 'Trash'}
         </div>
       </div>
