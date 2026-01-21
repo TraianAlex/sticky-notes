@@ -19,3 +19,6 @@ Feaures:
 Todo:
 - Edit note text
 - Saving notes to REST API
+
+---
+- deployed https://styckynotes.netlify.app/
