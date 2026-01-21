@@ -1,73 +1,21 @@
-# React + TypeScript + Vite
+# React sticky notes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- npm install
+- npm run dev
 
-Currently, two official plugins are available:
+This app is a Vite + React single-page UI with a small cards module under `src/cards`. The root `App` component renders `AppCards`, which owns board state, drag/resize interactions, and connects the UI to persisted state in `localStorage` via `useLocalStorageState`. That custom hook handles serialization and optional cross-tab syncing, keeping the component tree focused on UI logic.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+UI elements are composed into focused components (`Card`, `AddButton`, `AddModal`, `TrashZone`) and lifted state flows down as props. `AppCards` coordinates behavior like drag state, sizing constraints, and deletion, while `Card` is memoized to reduce re-renders and `AddModal` is code-split with `React.lazy` for faster initial load. Styles are primarily utility classes, with minimal global CSS in `src/App.css` and `src/index.css`.
 
-## React Compiler
+Feaures:
+- Create a new note of the specified size at the specified position (in config DEFAULT_SIZE)
+- Change note size by dragging
+- Move a note by dragging
+- Remove a note by dragging it over a predefined "trash" zone
+- Entering note text at creation time
+- Saving notes to local storage (restoring them on page load)
+- Cross-tab syncronization
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Todo:
+- Edit note text
+- Saving notes to REST API
